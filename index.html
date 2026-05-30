@@ -402,7 +402,7 @@
         <li><span class="num">4</span><div><h4>Início do Cuidado</h4><p>Atendimento iniciado com supervisão da nossa equipe de enfermagem.</p></div></li>
       </ol>
     </div>
-    <form class="form-card" onsubmit="event.preventDefault(); alert('Recebemos seu pedido! Em breve entraremos em contato.');">
+    <form class="form-card" id="lead-form">
       <label for="f-nome">Nome</label>
       <input id="f-nome" name="nome" type="text" placeholder="Nome" required>
       <label for="f-email">Email</label>
@@ -417,7 +417,8 @@
         <option>Dependente</option>
         <option>Alta complexidade</option>
       </select>
-      <button class="btn" type="submit">Enviar</button>
+      <button class="btn" type="submit" id="form-btn">Enviar</button>
+      <p id="form-msg" style="display:none;margin-top:12px;text-align:center;font-size:14px"></p>
     </form>
   </div>
 </section>
@@ -478,6 +479,59 @@
   // Also catch any late layout shifts within first second
   setTimeout(() => window.scrollTo(0, 0), 50);
   setTimeout(() => window.scrollTo(0, 0), 250);
+
+  // Supabase config
+  const SUPA_URL = 'https://kisteehhsgnyufyrvxxh.supabase.co';
+  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtpc3RlZWhoc2dueXVmeXJ2eHhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNTUwMjYsImV4cCI6MjA5NDczMTAyNn0.lgWN7EkRvC9bQf97s6uaTb2a0yCmBo1US8aFbDCt_RM';
+
+  document.getElementById('lead-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('form-btn');
+    const msg = document.getElementById('form-msg');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    const payload = {
+      nome: document.getElementById('f-nome').value,
+      email: document.getElementById('f-email').value,
+      telefone: document.getElementById('f-tel').value,
+      grau_dependencia: document.getElementById('f-grau').value,
+      origem: 'LP Redesanare'
+    };
+
+    try {
+      const res = await fetch(`${SUPA_URL}/rest/v1/leads_redesanare`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPA_KEY,
+          'Authorization': `Bearer ${SUPA_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok || res.status === 201) {
+        msg.style.display = 'block';
+        msg.style.color = '#0f2f4b';
+        msg.textContent = '✅ Recebemos seu pedido! Em breve entraremos em contato.';
+        e.target.reset();
+        // Redireciona para WhatsApp após 1.5s
+        setTimeout(() => {
+          window.open('https://wa.me/5521996468912?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20um%20especialista', '_blank');
+        }, 1500);
+      } else {
+        throw new Error('Erro ' + res.status);
+      }
+    } catch (err) {
+      msg.style.display = 'block';
+      msg.style.color = '#aa0003';
+      msg.textContent = '❌ Erro ao enviar. Tente novamente ou fale pelo WhatsApp.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Enviar';
+    }
+  });
 
   document.querySelectorAll('.faq-q').forEach(btn => {
     btn.addEventListener('click', () => {
