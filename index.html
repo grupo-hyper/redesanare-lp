@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Redesanare — Cuidado domiciliar com supervisão de saúde</title>
+<meta name="description" content="Assistência domiciliar monitorada com equipe multidisciplinar e supervisão de enfermagem." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0f2f4b;
+    --navy-deep:#0b2540;
+    --navy-card:#143a5c;
+    --red:#aa0003;
+    --text:#181919;
+    --muted:#5a6877;
+    --white:#fff;
+    --bg-light:#f6f8fb;
+    --border:#e3e8ef;
+    --serif:'Crimson Pro', Georgia, serif;
+    --sans:'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --max:1200px;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--sans);color:var(--text);background:#fff;line-height:1.55;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{font-family:var(--serif);color:var(--navy);font-weight:700;line-height:1.1;margin:0}
+  p{margin:0}
+  .container{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--red);color:#fff;font-family:var(--sans);font-weight:600;font-size:18px;
+    padding:16px 32px;border-radius:100px;border:none;cursor:pointer;
+    box-shadow:0 0 15px 0 rgba(170,0,3,0.40);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 0 22px 0 rgba(170,0,3,0.55)}
+  .btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+
+  nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  .nav-inner{max-width:var(--max);margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .nav-logo img{height:42px;width:auto}
+  .nav-links{list-style:none;display:flex;gap:28px;margin:0;padding:0;font-size:15px;color:var(--navy);font-weight:500}
+  .nav-links a:hover{color:var(--red)}
+  .nav-cta{font-size:14px;padding:10px 22px}
+  .nav-burger{display:none;background:none;border:none;cursor:pointer;color:var(--navy);font-size:24px}
+
+  .hero{position:relative;padding:140px 0 100px;background:#fff;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;z-index:0}
+  .hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+  .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,0.96) 0%,rgba(255,255,255,0.88) 35%,rgba(255,255,255,0.45) 55%,rgba(255,255,255,0) 75%)}
+  .hero-inner{position:relative;z-index:1;max-width:var(--max);margin:0 auto;padding:0 24px}
+  .hero h1{font-size:54px;line-height:1.06;color:var(--navy);max-width:640px;letter-spacing:-0.5px}
+  .hero h1 em{font-style:italic;color:var(--red);font-weight:700}
+  .hero p.lead{margin-top:24px;font-size:17px;line-height:1.6;color:var(--text);max-width:560px}
+  .hero p.lead b{font-weight:700;color:var(--navy)}
+  .hero .btn{margin-top:36px}
+
+  .band-dark{background:var(--navy);color:#fff;padding:80px 24px 40px;text-align:center}
+  .band-dark .eyebrow{font-family:var(--serif);font-size:38px;color:#fff;font-weight:400;line-height:1.2}
+  .band-dark h2{font-family:var(--serif);font-style:italic;font-weight:700;color:#fff;font-size:48px;margin-top:8px;line-height:1.15}
+  .band-dark .sub{margin:28px auto 0;max-width:760px;font-size:17px;color:rgba(255,255,255,0.86);line-height:1.6}
+
+  .features-dark{background:var(--navy);padding:40px 24px 100px}
+  .features-grid{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .feature-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.06);border-radius:18px;padding:36px 32px}
+  .feature-card .ico{width:52px;height:52px;border-radius:12px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:22px}
+  .feature-card .ico svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:1.5}
+  .feature-card h3{font-family:var(--serif);font-weight:700;color:#fff;font-size:22px;margin-bottom:10px}
+  .feature-card p{color:rgba(255,255,255,0.78);font-size:15px;line-height:1.6}
+
+  .pain{padding:100px 24px;background:#fff}
+  .pain-grid{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:28px;align-items:stretch}
+  .pain-left h2{font-size:38px;line-height:1.15;color:var(--navy)}
+  .pain-left h2 em{font-style:italic;color:var(--red);font-weight:700}
+  .pain-left p{margin-top:18px;font-size:16px;color:var(--text);line-height:1.65}
+  .pain-left .btn{margin-top:28px;font-size:16px;padding:14px 26px}
+  .pain-img{position:relative;border-radius:18px;overflow:hidden;min-height:340px}
+  .pain-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .pain-img .cap{position:absolute;left:18px;right:18px;bottom:18px;background:rgba(15,47,75,0.92);color:#fff;padding:16px 18px;border-radius:14px;font-family:var(--serif);font-size:18px;line-height:1.25}
+  .pain-img .cap{font-family:var(--sans);font-size:15px;font-weight:400;color:rgba(255,255,255,0.92)}
+  .pain-img .cap em{font-style:normal;color:#fff;font-weight:700}
+  .pain-cards{display:flex;flex-direction:column;gap:18px}
+  .pain-card{position:relative;border-radius:18px;overflow:hidden;min-height:180px;flex:1}
+  .pain-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .pain-card .cap{position:absolute;left:14px;right:14px;bottom:14px;background:rgba(15,47,75,0.92);color:rgba(255,255,255,0.92);padding:14px 16px;border-radius:14px;font-family:var(--sans);font-size:15px;font-weight:400;line-height:1.4}
+  .pain-card .cap em{color:#fff;font-style:normal;font-weight:700}
+
+  .team{padding:100px 24px;background:var(--bg-light)}
+  .team-inner{max-width:var(--max);margin:0 auto;text-align:center}
+  .team h2{font-size:42px;line-height:1.15}
+  .team h2 em{font-style:italic;color:var(--red);font-weight:700}
+  .team .sub{margin:18px auto 0;max-width:680px;font-size:16px;color:var(--muted)}
+  .team-pills{margin-top:36px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;list-style:none;padding:0;max-width:1180px;margin-left:auto;margin-right:auto}
+  .team-pill{background:#fff;border:1px solid var(--border);color:var(--navy);padding:9px 16px;border-radius:100px;font-weight:600;font-size:13px;white-space:nowrap}
+
+  .equipment{padding:100px 24px;background:#fff}
+  .equipment-grid{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:stretch}
+  .equip-card{background:var(--navy);color:#fff;border-radius:20px;padding:44px;display:flex;flex-direction:column;justify-content:center;gap:22px}
+  .equip-card h2{font-family:var(--serif);color:#fff;font-size:36px;line-height:1.15}
+  .equip-card h2 em{font-style:italic;color:#fff;font-weight:700}
+  .equip-card p{color:rgba(255,255,255,0.82);font-size:17px;line-height:1.65}
+  .equip-tags{display:flex;flex-wrap:wrap;gap:12px}
+  .equip-tag{background:#fff;color:var(--navy);font-size:14px;font-weight:600;padding:10px 20px;border-radius:100px}
+  .equip-list{background:var(--navy);color:#fff;border-radius:20px;padding:20px 32px;display:flex;flex-direction:column;justify-content:center;gap:0}
+  .equip-list .item{display:flex;align-items:center;gap:18px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.10);font-family:var(--serif);font-weight:700;font-size:18px}
+  .equip-list .item:last-child{border-bottom:none}
+  .equip-list .num{width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:14px;font-weight:600;flex-shrink:0;color:#fff}
+
+  .daily{padding:100px 24px 60px;background:#fff}
+  .daily-head{max-width:var(--max);margin:0 auto 40px;text-align:center}
+  .daily-head h2{font-size:42px;line-height:1.15}
+  .daily-head h2 em{color:var(--navy);font-style:normal;font-weight:700}
+  .daily-grid{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .daily-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:28px;min-height:200px}
+  .daily-card .ico{width:48px;height:48px;border-radius:10px;background:var(--navy);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+  .daily-card .ico svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.6}
+  .daily-card h3{font-family:var(--serif);font-size:20px;color:var(--navy);margin-bottom:10px}
+  .daily-card p{color:var(--muted);font-size:14px;line-height:1.6}
+  .daily-card.dark{background:var(--navy);color:#fff;border:none;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .daily-card.dark p{color:#fff;font-size:17px;font-family:var(--sans);font-weight:500;margin-bottom:20px}
+  .daily-card.dark p b{font-weight:700}
+  .shift-pills{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .shift-pill{background:#fff;color:var(--navy);font-weight:700;font-size:14px;padding:10px 20px;border-radius:100px}
+
+  .testimonials{padding:100px 24px;background:var(--bg-light)}
+  .testimonials-head{max-width:var(--max);margin:0 auto 40px;text-align:center}
+  .testimonials-head h2{font-size:42px}
+  .testimonials-head h2 em{color:var(--red);font-style:italic;font-weight:700}
+  .testimonials-grid{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .testimonial{background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px}
+  .stars{color:#f5a623;font-size:14px;letter-spacing:2px;margin-bottom:14px}
+  .testimonial p.quote{font-style:italic;color:var(--text);font-size:15px;line-height:1.65}
+  .testimonial p.name{margin-top:18px;font-family:var(--serif);font-weight:700;color:var(--navy);font-size:16px}
+
+  .steps{padding:100px 24px;background:#fff}
+  .steps-wrap{max-width:var(--max);margin:0 auto;background:var(--navy);border-radius:24px;padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  .steps-list h2{font-family:var(--serif);color:#fff;font-size:28px;margin-bottom:28px}
+  .steps-list ol{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:22px}
+  .steps-list li{display:flex;gap:18px;align-items:flex-start}
+  .steps-list .num{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff;flex-shrink:0}
+  .steps-list h4{font-family:var(--serif);color:#fff;font-size:18px;margin-bottom:4px}
+  .steps-list p{color:rgba(255,255,255,0.78);font-size:14px;line-height:1.55}
+  .form-card{background:#fff;border-radius:16px;padding:32px;color:var(--text)}
+  .form-card label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px;margin-top:14px}
+  .form-card label:first-of-type{margin-top:0}
+  .form-card input,.form-card select{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;background:#fff;color:var(--text)}
+  .form-card input:focus,.form-card select:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(15,47,75,0.10)}
+  .form-card .btn{width:100%;margin-top:22px;font-size:16px;padding:14px 24px}
+
+  .faq{padding:100px 24px;background:var(--bg-light)}
+  .faq-head{max-width:780px;margin:0 auto 36px;text-align:center}
+  .faq-head h2{font-size:42px}
+  .faq-list{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+  .faq-item{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+  .faq-q{width:100%;background:none;border:none;text-align:left;padding:20px 24px;font-family:var(--serif);font-weight:700;color:var(--navy);font-size:17px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  .faq-q .chev{transition:transform .25s ease;font-size:14px}
+  .faq-item[aria-expanded="true"] .chev{transform:rotate(180deg)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease, padding .25s ease;padding:0 24px;color:var(--text);font-size:15px;line-height:1.6}
+  .faq-item[aria-expanded="true"] .faq-a{max-height:300px;padding:0 24px 22px}
+
+  .final{background:var(--navy);padding:90px 24px;text-align:center;color:#fff}
+  .final h2{color:#fff;font-size:46px;line-height:1.15;max-width:780px;margin:0 auto}
+  .final h2 em{font-style:italic;color:#fff;font-weight:700}
+  .final p{color:rgba(255,255,255,0.85);margin:20px auto 0;max-width:520px;font-size:15px}
+  .final .btn{margin-top:32px}
+
+  footer{background:#0a1f33;color:rgba(255,255,255,0.75);padding:48px 24px 32px;font-size:13px}
+  .footer-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .footer-inner img{height:36px}
+  .footer-links{list-style:none;display:flex;gap:24px;margin:0;padding:0}
+  .footer-links a:hover{color:#fff}
+
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:1024px){
+    .hero h1{font-size:42px}
+    .daily-grid{grid-template-columns:1fr 1fr}
+    .testimonials-grid{grid-template-columns:1fr}
+    .steps-wrap{grid-template-columns:1fr;padding:32px}
+    .hero-bg img{width:100%;opacity:.22}
+  }
+  @media (max-width:768px){
+    .nav-links{display:none}
+    .nav-burger{display:block}
+    .hero{padding:110px 0 70px}
+    .hero h1{font-size:34px}
+    .band-dark .eyebrow{font-size:28px}
+    .band-dark h2{font-size:34px}
+    .features-grid{grid-template-columns:1fr}
+    .pain-grid{grid-template-columns:1fr}
+    .equipment-grid{grid-template-columns:1fr}
+    .daily-grid{grid-template-columns:1fr}
+    .pain-left h2,.team h2,.daily-head h2,.testimonials-head h2,.faq-head h2,.final h2,.equip-card h2{font-size:30px}
+    .pain-card{flex-direction:column;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav" aria-label="Principal">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#"><img src="images/logo.png" alt="Redesanare"></a>
+    <ul class="nav-links">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#equipe">Equipe</a></li>
+      <li><a href="#equipamentos">Equipamentos</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="https://wa.me/5521996468912?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20um%20especialista" target="_blank" rel="noopener" class="btn nav-cta">Falar com especialista</a>
+    <button class="nav-burger" aria-label="Abrir menu">☰</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg"><img src="images/hero.jpg" alt=""></div>
+  <div class="hero-inner">
+    <h1>O cuidado que quem você ama merece.<br>A <em>tranquilidade</em> que sua família precisa.</h1>
+    <p class="lead">Não contrate apenas um cuidador, contrate uma <b>equipe de saúde completa.</b> Na Redesanare, oferecemos assistência domiciliar monitorada, com profissionais qualificados e supervisão de enfermagem, para garantir segurança e carinho no conforto do lar.</p>
+    <a href="https://wa.me/5521996468912?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20um%20especialista" target="_blank" rel="noopener" class="btn">Solicitar orçamento personalizado</a>
+  </div>
+</header>
+
+<section class="band-dark reveal" id="sobre">
+  <div class="container">
+    <div class="eyebrow">Mais do que um cuidador:</div>
+    <h2>Um sistema de segurança em saúde</h2>
+    <p class="sub">Ao contratar a Redesanare, você elimina os riscos da contratação informal e ganha uma estrutura profissional.</p>
+  </div>
+</section>
+
+<section class="features-dark">
+  <div class="features-grid reveal">
+    <div class="feature-card">
+      <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/><path d="M16 11l2 2 4-4"/></svg></div>
+      <h3>Seleção Rigorosa</h3>
+      <p>Apenas os melhores profissionais passam em nosso processo. Avaliamos técnica, perfil comportamental e referências, com 100% das checagens validadas.</p>
+    </div>
+    <div class="feature-card">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 22s-7-4.35-7-12a7 7 0 0 1 14 0c0 7.65-7 12-7 12z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <h3>Cobertura de Faltas</h3>
+      <p>Seu familiar nunca fica sozinho. Em caso de imprevisto com o cuidador/técnico, nossa equipe de gestão providencia a substituição imediata.</p>
+    </div>
+    <div class="feature-card">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
+      <h3>Supervisão Técnica</h3>
+      <p>Nossos cuidadores/técnicos são orientados e supervisionados periodicamente por enfermeiros seniores.</p>
+    </div>
+    <div class="feature-card">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/></svg></div>
+      <h3>Segurança Jurídica</h3>
+      <p>Esqueça a dor de cabeça com processos trabalhistas. A responsabilidade dos prestadores é nossa.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pain reveal">
+  <div class="pain-grid">
+    <div class="pain-left">
+      <h2>Cuidar de quem cuidou de nós é um ato de amor, <em>mas não precisa ser um fardo</em></h2>
+      <p>Encontrar um cuidador confiável, lidar com a burocracia trabalhista e ter a tranquilidade de saber que tudo está sob controle profissional é um peso que muitas famílias carregam sozinhas. A Redesanare existe para retirar esse peso.</p>
+      <a href="https://wa.me/5521996468912?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20um%20especialista" target="_blank" rel="noopener" class="btn">Falar com um especialista</a>
+    </div>
+    <div class="pain-img">
+      <img src="images/saindo-casa.jpg" alt="Família saindo de casa">
+      <div class="cap">Está cansado de lidar com a <em>falta de confiança</em> de profissionais autônomos?</div>
+    </div>
+    <div class="pain-cards">
+      <div class="pain-card">
+        <img src="images/medicamentos.jpg" alt="Medicamentos">
+        <div class="cap"><em>Sente insegurança</em> sobre a medicação correta ou o risco de quedas?</div>
+      </div>
+      <div class="pain-card">
+        <img src="images/idosa-sozinha.jpg" alt="Idosa sozinha">
+        <div class="cap">Você se preocupa quando precisa sair para trabalhar e <em>deixá-lo sozinho</em>?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="team reveal" id="equipe">
+  <div class="team-inner">
+    <h2>Uma equipe inteira <em>ao lado</em> do seu familiar</h2>
+    <p class="sub">Não trabalhamos com um único profissional. Montamos uma estrutura de saúde sob medida, com especialistas de diferentes áreas atuando de forma integrada.</p>
+    <ul class="team-pills" role="list">
+      <li class="team-pill">Médicos</li>
+      <li class="team-pill">Enfermeiros</li>
+      <li class="team-pill">Técnicos de Enfermagem</li>
+      <li class="team-pill">Nutricionistas</li>
+      <li class="team-pill">Fonoaudiólogos</li>
+      <li class="team-pill">Fisioterapeutas</li>
+      <li class="team-pill">Psicólogos</li>
+      <li class="team-pill">+ Cuidadores</li>
+    </ul>
+  </div>
+</section>
+
+<section class="equipment reveal" id="equipamentos">
+  <div class="equipment-grid">
+    <div class="equip-card">
+      <h2>Montamos a estrutura necessária para <em>cada caso</em></h2>
+      <p>Além dos profissionais, disponibilizamos os equipamentos e móveis hospitalares adequados à complexidade do paciente, sem que a família precise se preocupar em buscar, alugar ou instalar nada.</p>
+      <div class="equip-tags">
+        <span class="equip-tag">Alta Complexidade</span>
+        <span class="equip-tag">Pós-operatório</span>
+        <span class="equip-tag">AVC e Sequelas</span>
+        <span class="equip-tag">Doenças Crônicas</span>
+        <span class="equip-tag">Cuidados Paliativos</span>
+        <span class="equip-tag">Reabilitação</span>
+      </div>
+    </div>
+    <div class="equip-list">
+      <div class="item"><span class="num">1</span> Camas Hospitalares Articuladas</div>
+      <div class="item"><span class="num">2</span> Bomba de Infusão e Oxigenoterapia</div>
+      <div class="item"><span class="num">3</span> Cadeiras de Rodas e Andadores</div>
+      <div class="item"><span class="num">4</span> Monitores de Sinais Vitais</div>
+      <div class="item"><span class="num">5</span> Colchões Pneumáticos Antiescaras</div>
+      <div class="item"><span class="num">6</span> Adaptações de Banheiro e Segurança</div>
+    </div>
+  </div>
+</section>
+
+<section class="daily reveal">
+  <div class="daily-head">
+    <h2>Como nossos profissionais <em>atuam no dia a dia?</em></h2>
+  </div>
+  <div class="daily-grid">
+    <div class="daily-card">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <h3>Higiene e Conforto</h3>
+      <p>Banhos, troca de fraldas e vestimenta com técnicas que preservam a dignidade.</p>
+    </div>
+    <div class="daily-card">
+      <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="6" rx="3"/><path d="M12 9v6"/></svg></div>
+      <h3>Administração de Medicamentos</h3>
+      <p>Controle rigoroso de horários e dosagens prescritas pelo médico.</p>
+    </div>
+    <div class="daily-card">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/></svg></div>
+      <h3>Prevenção de Acidentes</h3>
+      <p>Adaptação da rotina para evitar quedas e lesões.</p>
+    </div>
+    <div class="daily-card">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M8 11a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v0M4 14l4-2 4 2 4-2 4 2"/></svg></div>
+      <h3>Estímulo e Companhia</h3>
+      <p>Apoio emocional, conversas e atividades que evitam o isolamento social do idoso.</p>
+    </div>
+    <div class="daily-card">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h6"/></svg></div>
+      <h3>Relatórios Diários</h3>
+      <p>A família recebe atualizações constantes sobre o estado do paciente.</p>
+    </div>
+    <div class="daily-card dark">
+      <p><b>Plantões flexíveis</b> para cada necessidade da família:</p>
+      <div class="shift-pills">
+        <span class="shift-pill">6 horas</span>
+        <span class="shift-pill">12 horas</span>
+        <span class="shift-pill">24 horas</span>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:40px"><a href="https://wa.me/5521996468912?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20um%20especialista" target="_blank" rel="noopener" class="btn">Conhecer os planos de atendimento</a></div>
+</section>
+
+<section class="testimonials reveal">
+  <div class="testimonials-head">
+    <h2>Famílias que confiam na <em>Redesanare</em></h2>
+  </div>
+  <div class="testimonials-grid" style="margin-bottom:40px">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="quote">"Minha mãe renasceu depois que a equipe da Redesanare chegou. Hoje vou trabalhar tranquila sabendo que ela está em boas mãos."</p>
+      <p class="name">Maria Santana</p>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="quote">"Profissionais qualificados, atualizados e que exercem o trabalho humanizado para com seus clientes. Empresa Top!"</p>
+      <p class="name">Patrícia Gonçalves</p>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="quote">"Venho por meio desta, parabenizar a equipe da SANARE pelo excelente trabalho realizado com minha mãe, estabilizando assim sua saúde."</p>
+      <p class="name">Elisabeth de Figueiredo</p>
+    </div>
+  </div>
+</section>
+
+<section class="steps reveal" id="contato">
+  <div class="steps-wrap">
+    <div class="steps-list">
+      <h2>Contratar é simples e seguro:</h2>
+      <ol>
+        <li><span class="num">1</span><div><h4>Contato Inicial</h4><p>Atendimento realizado por um especialista da nossa equipe.</p></div></li>
+        <li><span class="num">2</span><div><h4>Avaliação Gratuita</h4><p>Entendemos o perfil do paciente (grau de dependência, rotina, patologias).</p></div></li>
+        <li><span class="num">3</span><div><h4>Match do Cuidador</h4><p>Selecionamos o profissional com o perfil técnico e comportamental ideal para sua família.</p></div></li>
+        <li><span class="num">4</span><div><h4>Início do Cuidado</h4><p>Atendimento iniciado com supervisão da nossa equipe de enfermagem.</p></div></li>
+      </ol>
+    </div>
+    <form class="form-card" onsubmit="event.preventDefault(); alert('Recebemos seu pedido! Em breve entraremos em contato.');">
+      <label for="f-nome">Nome</label>
+      <input id="f-nome" name="nome" type="text" placeholder="Nome" required>
+      <label for="f-email">Email</label>
+      <input id="f-email" name="email" type="email" placeholder="Email" required>
+      <label for="f-tel">Telefone</label>
+      <input id="f-tel" name="telefone" type="tel" placeholder="Telefone" required>
+      <label for="f-grau">Grau de Dependência do Idoso</label>
+      <select id="f-grau" name="grau" required>
+        <option value="">Selecionar uma opção</option>
+        <option>Independente</option>
+        <option>Semi-dependente</option>
+        <option>Dependente</option>
+        <option>Alta complexidade</option>
+      </select>
+      <button class="btn" type="submit">Enviar</button>
+    </form>
+  </div>
+</section>
+
+<section class="faq reveal" id="faq">
+  <div class="faq-head"><h2>Perguntas Frequentes</h2></div>
+  <div class="faq-list">
+    <div class="faq-item" aria-expanded="true">
+      <button class="faq-q">1. E se a gente não se adaptar ao cuidador? <span class="chev">▾</span></button>
+      <div class="faq-a">Sem problemas. Fazemos a substituição do profissional até encontrar o "match" perfeito para sua família, sem custo adicional.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">2. Vocês atendem pacientes de alta complexidade? <span class="chev">▾</span></button>
+      <div class="faq-a">Sim. Temos equipe técnica e equipamentos para casos de pós-operatório, AVC, doenças crônicas e cuidados paliativos.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">3. Qual o valor do investimento? <span class="chev">▾</span></button>
+      <div class="faq-a">O investimento varia conforme grau de dependência e plantão escolhido. Faça uma avaliação gratuita com nossa equipe.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">4. Como é a supervisão de enfermagem? <span class="chev">▾</span></button>
+      <div class="faq-a">Visitas periódicas presenciais e acompanhamento técnico contínuo, com relatórios para a família.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">5. Vocês atendem em qual região? <span class="chev">▾</span></button>
+      <div class="faq-a">Atendemos toda a região metropolitana. Consulte a disponibilidade para o seu endereço.</div>
+    </div>
+  </div>
+</section>
+
+<section class="final reveal">
+  <h2>Garanta o melhor cuidado para <em>quem você ama</em> hoje mesmo.</h2>
+  <p>Não espere uma emergência acontecer. Fale com nossa equipe de acolhimento e descubra como podemos ajudar.</p>
+  <a href="https://wa.me/5521996468912?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20um%20especialista" target="_blank" rel="noopener" class="btn">Quero falar com um especialista agora!</a>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <img src="images/logo.png" alt="Redesanare">
+    <ul class="footer-links">
+      <li><a href="#">Política de Privacidade</a></li>
+      <li><a href="#">Termos de Uso</a></li>
+      <li><a href="https://wa.me/5521996468912?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20um%20especialista" target="_blank" rel="noopener">Contato</a></li>
+    </ul>
+    <span>© Redesanare. Todos os direitos reservados.</span>
+  </div>
+</footer>
+
+<script>
+  // Always start at the top on reload (strip URL hash + reset scroll)
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (window.location.hash) {
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+  window.scrollTo(0, 0);
+  document.addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0));
+  window.addEventListener('load', () => window.scrollTo(0, 0));
+  // Also catch any late layout shifts within first second
+  setTimeout(() => window.scrollTo(0, 0), 50);
+  setTimeout(() => window.scrollTo(0, 0), 250);
+
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const open = item.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.faq-item').forEach(i => i.setAttribute('aria-expanded','false'));
+      item.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }});
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  document.querySelector('.nav-burger')?.addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    if (!links) return;
+    const open = links.style.display === 'flex';
+    links.style.cssText = open ? 'display:none' : 'display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:#fff;padding:20px;border-bottom:1px solid var(--border)';
+  });
+</script>
+</body>
+</html>
