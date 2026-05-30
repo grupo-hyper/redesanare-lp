@@ -68,7 +68,65 @@
 
   .features-dark{background:var(--navy);padding:40px 24px 100px}
   .features-grid{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-  .feature-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.06);border-radius:18px;padding:36px 32px}
+  .feature-card{
+    background:var(--navy-card);
+    border:3px solid rgba(255,255,255,0.08);
+    border-radius:14px;
+    padding:36px 32px;
+    position:relative;
+    overflow:hidden;
+    touch-action:none;
+    --x:0; --y:0; --xp:0; --yp:0;
+    --hue:220;
+    --spotlight-size:200px;
+    --border-size:3px;
+  }
+  .feature-card::before,
+  .feature-card::after{
+    pointer-events:none;
+    content:"";
+    position:absolute;
+    inset:calc(var(--border-size) * -1);
+    border:var(--border-size) solid transparent;
+    border-radius:14px;
+    background-attachment:fixed;
+    background-size:calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    mask:linear-gradient(transparent,transparent),linear-gradient(white,white);
+    mask-clip:padding-box,border-box;
+    mask-composite:intersect;
+    -webkit-mask:linear-gradient(transparent,transparent),linear-gradient(white,white);
+    -webkit-mask-clip:padding-box,border-box;
+    -webkit-mask-composite:destination-in;
+  }
+  .feature-card::before{
+    background-image:radial-gradient(
+      calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
+      calc(var(--x) * 1px) calc(var(--y) * 1px),
+      hsl(var(--hue) 100% 50% / 1) , transparent 100%
+    );
+    filter:brightness(2);
+  }
+  .feature-card::after{
+    background-image:radial-gradient(
+      calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
+      calc(var(--x) * 1px) calc(var(--y) * 1px),
+      hsl(0 100% 100% / 0.8), transparent 100%
+    );
+  }
+  .feature-card .glow-bg{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background-image:radial-gradient(
+      var(--spotlight-size) var(--spotlight-size) at
+      calc(var(--x) * 1px) calc(var(--y) * 1px),
+      hsl(var(--hue) 100% 70% / 0.08), transparent
+    );
+    background-attachment:fixed;
+    border-radius:14px;
+  }
   .feature-card .ico{width:52px;height:52px;border-radius:12px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:22px}
   .feature-card .ico svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:1.5}
   .feature-card h3{font-family:var(--serif);font-weight:700;color:#fff;font-size:22px;margin-bottom:10px}
@@ -238,21 +296,25 @@
 <section class="features-dark">
   <div class="features-grid reveal">
     <div class="feature-card">
+      <div class="glow-bg"></div>
       <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/><path d="M16 11l2 2 4-4"/></svg></div>
       <h3>Seleção Rigorosa</h3>
       <p>Apenas os melhores profissionais passam em nosso processo. Avaliamos técnica, perfil comportamental e referências, com 100% das checagens validadas.</p>
     </div>
     <div class="feature-card">
+      <div class="glow-bg"></div>
       <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 22s-7-4.35-7-12a7 7 0 0 1 14 0c0 7.65-7 12-7 12z"/><circle cx="12" cy="10" r="3"/></svg></div>
       <h3>Cobertura de Faltas</h3>
       <p>Seu familiar nunca fica sozinho. Em caso de imprevisto com o cuidador/técnico, nossa equipe de gestão providencia a substituição imediata.</p>
     </div>
     <div class="feature-card">
+      <div class="glow-bg"></div>
       <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
       <h3>Supervisão Técnica</h3>
       <p>Nossos cuidadores/técnicos são orientados e supervisionados periodicamente por enfermeiros seniores.</p>
     </div>
     <div class="feature-card">
+      <div class="glow-bg"></div>
       <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/></svg></div>
       <h3>Segurança Jurídica</h3>
       <p>Esqueça a dor de cabeça com processos trabalhistas. A responsabilidade dos prestadores é nossa.</p>
@@ -479,6 +541,17 @@
   // Also catch any late layout shifts within first second
   setTimeout(() => window.scrollTo(0, 0), 50);
   setTimeout(() => window.scrollTo(0, 0), 250);
+
+  // GlowCard effect on feature cards
+  document.addEventListener('pointermove', (e) => {
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.style.setProperty('--x', e.clientX.toFixed(2));
+      card.style.setProperty('--y', e.clientY.toFixed(2));
+      card.style.setProperty('--xp', (e.clientX / window.innerWidth).toFixed(2));
+      card.style.setProperty('--yp', (e.clientY / window.innerHeight).toFixed(2));
+      card.style.setProperty('--hue', (220 + parseFloat(card.style.getPropertyValue('--xp') || '0') * 200).toFixed(0));
+    });
+  });
 
   // Supabase config
   const SUPA_URL = 'https://kisteehhsgnyufyrvxxh.supabase.co';
